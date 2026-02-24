@@ -63,3 +63,98 @@ FOREIGN KEY ("book_id")
   [1m[36mTRANSACTION (1.4ms)[0m  [1m[35mCOMMIT /*application='Techtest'*/[0m
   [1m[35m (0.5ms)[0m  [1m[34mSELECT pg_advisory_unlock(1665492567252309285) /*application='Techtest'*/[0m
   [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Techtest'*/[0m
+Started GET "/" for 127.0.0.1 at 2026-02-24 17:41:49 -0300
+  [1m[36mActiveRecord::SchemaMigration Load (1.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Techtest'*/[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /home/matheus/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/railties-8.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/matheus/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/railties-8.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.7ms | GC: 0.0ms)
+Completed 200 OK in 50ms (Views: 16.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 1.1ms)
+
+
+Started GET "/icon.png" for 127.0.0.1 at 2026-02-24 17:41:49 -0300
+  
+ActionController::RoutingError (No route matches [GET] "/icon.png"):
+  
+Started GET "/" for 127.0.0.1 at 2026-02-24 17:43:16 -0300
+Processing by Rails::WelcomeController#index as */*
+  Rendering /home/matheus/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/railties-8.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/matheus/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/railties-8.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.9ms | GC: 0.0ms)
+Completed 200 OK in 4ms (Views: 2.7ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/books" for ::1 at 2026-02-24 17:43:35 -0300
+Processing by BooksController#index as */*
+  [1m[36mBook Load (13.4ms)[0m  [1m[34mSELECT "books".* FROM "books" /*action='index',application='Techtest',controller='books'*/[0m
+  ↳ app/controllers/books_controller.rb:4:in `index'
+Completed 200 OK in 58ms (Views: -1.7ms | ActiveRecord: 19.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN /*application='Techtest'*/[0m
+  [1m[36mBook Create (2.0ms)[0m  [1m[32mINSERT INTO "books" ("title", "author", "status", "created_at", "updated_at") VALUES ('testing', 'test', 'available', '2026-02-24 20:44:37.012943', '2026-02-24 20:44:37.012943') RETURNING "id" /*application='Techtest'*/[0m
+  [1m[36mTRANSACTION (9.3ms)[0m  [1m[35mCOMMIT /*application='Techtest'*/[0m
+Started GET "/books" for ::1 at 2026-02-24 17:44:44 -0300
+Processing by BooksController#index as */*
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" /*action='index',application='Techtest',controller='books'*/[0m
+  ↳ app/controllers/books_controller.rb:4:in `index'
+Completed 200 OK in 25ms (Views: 14.5ms | ActiveRecord: 10.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN /*application='Techtest'*/[0m
+  [1m[36mBook Create (1.1ms)[0m  [1m[32mINSERT INTO "books" ("title", "author", "status", "created_at", "updated_at") VALUES ('testing2', 'test2', 'available', '2026-02-24 20:44:53.241362', '2026-02-24 20:44:53.241362') RETURNING "id" /*application='Techtest'*/[0m
+  [1m[36mTRANSACTION (11.0ms)[0m  [1m[35mCOMMIT /*application='Techtest'*/[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN /*application='Techtest'*/[0m
+  [1m[36mBook Create (1.9ms)[0m  [1m[32mINSERT INTO "books" ("title", "author", "status", "created_at", "updated_at") VALUES ('testing3', 'test3', 'available', '2026-02-24 20:44:57.514566', '2026-02-24 20:44:57.514566') RETURNING "id" /*application='Techtest'*/[0m
+  [1m[36mTRANSACTION (11.3ms)[0m  [1m[35mCOMMIT /*application='Techtest'*/[0m
+Started GET "/books" for ::1 at 2026-02-24 17:44:59 -0300
+Processing by BooksController#index as */*
+  [1m[36mBook Load (0.6ms)[0m  [1m[34mSELECT "books".* FROM "books" /*action='index',application='Techtest',controller='books'*/[0m
+  ↳ app/controllers/books_controller.rb:4:in `index'
+Completed 200 OK in 4ms (Views: 3.2ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN /*application='Techtest'*/[0m
+  [1m[36mBook Load (1.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."id" = 2 LIMIT 1 /*application='Techtest'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK /*application='Techtest'*/[0m
+Started GET "/books" for ::1 at 2026-02-24 17:47:53 -0300
+Processing by BooksController#index as */*
+  [1m[36mBook Load (0.8ms)[0m  [1m[34mSELECT "books".* FROM "books" /*action='index',application='Techtest',controller='books'*/[0m
+  ↳ app/controllers/books_controller.rb:5:in `index'
+  [1m[36mReservation Load (1.0ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."book_id" IN (1, 2, 3) /*action='index',application='Techtest',controller='books'*/[0m
+  ↳ app/controllers/books_controller.rb:5:in `index'
+Completed 200 OK in 87ms (Views: 43.9ms | ActiveRecord: 7.2ms (2 queries, 0 cached) | GC: 33.3ms)
+
+
+Started GET "/books?status=available" for ::1 at 2026-02-24 17:48:16 -0300
+Processing by BooksController#index as */*
+  Parameters: {"status"=>"available"}
+  [1m[36mBook Load (1.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."status" = 'available' /*action='index',application='Techtest',controller='books'*/[0m
+  ↳ app/controllers/books_controller.rb:5:in `index'
+  [1m[36mReservation Load (0.6ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."book_id" IN (1, 2, 3) /*action='index',application='Techtest',controller='books'*/[0m
+  ↳ app/controllers/books_controller.rb:5:in `index'
+Completed 200 OK in 11ms (Views: 7.9ms | ActiveRecord: 2.0ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+  [1m[36mBook Load (0.7ms)[0m  [1m[34mSELECT "books".* FROM "books" /* loading for pp */ LIMIT 11 /*application='Techtest'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN /*application='Techtest'*/[0m
+  [1m[36mBook Create (1.5ms)[0m  [1m[32mINSERT INTO "books" ("title", "author", "status", "created_at", "updated_at") VALUES ('test4', 'test4', 'reserved', '2026-02-24 20:48:50.951937', '2026-02-24 20:48:50.951937') RETURNING "id" /*application='Techtest'*/[0m
+  [1m[36mTRANSACTION (11.5ms)[0m  [1m[35mCOMMIT /*application='Techtest'*/[0m
+Started GET "/books?status=available" for ::1 at 2026-02-24 17:48:54 -0300
+Processing by BooksController#index as */*
+  Parameters: {"status"=>"available"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."status" = 'available' /*action='index',application='Techtest',controller='books'*/[0m
+  ↳ app/controllers/books_controller.rb:5:in `index'
+  [1m[36mReservation Load (0.6ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."book_id" IN (1, 2, 3) /*action='index',application='Techtest',controller='books'*/[0m
+  ↳ app/controllers/books_controller.rb:5:in `index'
+Completed 200 OK in 9ms (Views: 7.3ms | ActiveRecord: 1.1ms (2 queries, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/books?status=reserved" for ::1 at 2026-02-24 17:49:00 -0300
+Processing by BooksController#index as */*
+  Parameters: {"status"=>"reserved"}
+  [1m[36mBook Load (0.5ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."status" = 'reserved' /*action='index',application='Techtest',controller='books'*/[0m
+  ↳ app/controllers/books_controller.rb:5:in `index'
+  [1m[36mReservation Load (0.9ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."book_id" = 4 /*action='index',application='Techtest',controller='books'*/[0m
+  ↳ app/controllers/books_controller.rb:5:in `index'
+Completed 200 OK in 8ms (Views: 6.6ms | ActiveRecord: 1.2ms (2 queries, 0 cached) | GC: 0.7ms)
+
+

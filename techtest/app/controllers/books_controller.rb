@@ -1,12 +1,13 @@
 class BooksController < ApplicationController
   def index
-    @books = Book.all
-    render json: @books
+    @books = Book.includes(:reservations)
+    @books = @books.where(status: params[:status]) if params[:status].present?
+    render json: @books, include: :reservations
   end
 
   def show
     @book = Book.find(params[:id])
-    render json: @book
+    render json: @book, include: :reservations
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Book not found" }, status: :not_found
   end
@@ -31,7 +32,7 @@ class BooksController < ApplicationController
       return
     end
 
-    reservation = book.reservations.new(email: params[:email], status: "reserved")
+    reservation = @book.reservations.new(email: params[:email], status: "reserved")
 
     if reservation.save
       @book.update!(status: "reserved")
@@ -42,7 +43,7 @@ class BooksController < ApplicationController
   end
 
   private
-  
+
   def book_params
     params.require(:book).permit(:title, :author)
   end
