@@ -1,24 +1,13 @@
 require "test_helper"
 
 class BooksControllerTest < ActionDispatch::IntegrationTest
-  test "should get index" do
-    get books_index_url
-    assert_response :success
-  end
-
-  test "should get show" do
-    get books_show_url
-    assert_response :success
-  end
-
-  test "should get create" do
-    get books_create_url
-    assert_response :success
-  end
-
-  test "should get reserve" do
-    get books_reserve_url
-    assert_response :success
+  test "cannot reserve already reserved" do
+      post reserve_book_url(books(:reserved_book)),
+           params: { email: "user@test.com" },
+           as: :json
+    
+      assert_response :unprocessable_entity
+      assert_equal "Book is already reserved", response.parsed_body["error"]
   end
 
   #all books
