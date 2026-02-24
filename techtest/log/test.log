@@ -81,3 +81,46 @@ END;
 $$;
 [0m
   [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (1.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "books" DISABLE TRIGGER ALL;ALTER TABLE "reservations" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mFixtures Load (1.1ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "reservations";
+INSERT INTO "books" ("id", "title", "author", "status", "created_at", "updated_at") VALUES (349599371, 'Testbook1', 'Testauthor1', 'available', '2026-02-24 21:18:49.844004', '2026-02-24 21:18:49.844004'), (457185008, 'Testbook2', 'Testauthor2', 'reserved', '2026-02-24 21:18:49.844004', '2026-02-24 21:18:49.844004');
+INSERT INTO "reservations" ("id", "book_id", "email", "status", "created_at", "updated_at") VALUES (949240968, 457185008, 'test@test.com', 'reserved', '2026-02-24 21:18:49.852346', '2026-02-24 21:18:49.852346')[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "books" ENABLE TRIGGER ALL;ALTER TABLE "reservations" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (2.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (4.4ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_catalog.pg_constraint SET convalidated=false WHERE conname = ''%1$I'' AND connamespace::regnamespace = ''%2$I''::regnamespace; ALTER TABLE %2$I.%3$I VALIDATE CONSTRAINT %1$I;',
+    constraint_name,
+    table_schema,
+    table_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------------------
+BooksControllerTest: test_cannot_reserve_already_reserved
+---------------------------------------------------------
+  [1m[36mBook Load (0.9ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."id" = $1 LIMIT $2[0m  [["id", 457185008], ["LIMIT", 1]]
+Started POST "/books/457185008/reserve" for 127.0.0.1 at 2026-02-24 18:18:49 -0300
+Processing by BooksController#reserve as JSON
+  Parameters: {"email"=>"[FILTERED]", "id"=>"457185008", "book"=>{}}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."id" = $1 LIMIT $2[0m  [["id", 457185008], ["LIMIT", 1]]
+Completed 422 Unprocessable Content in 6ms (Views: 0.2ms | ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m

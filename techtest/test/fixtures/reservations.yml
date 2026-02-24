@@ -1,15 +1,5 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  book: one
-  email: MyString
-  status: MyString
-
-two:
-  book: two
-  email: MyString
-  status: MyString
-
 available_book_reservation:
   book: reserved_book
   email: test@test.com
