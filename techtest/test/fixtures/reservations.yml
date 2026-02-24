@@ -9,3 +9,8 @@ two:
   book: two
   email: MyString
   status: MyString
+
+available_book_reservation:
+  book: reserved_book
+  email: test@test.com
+  status: reserved

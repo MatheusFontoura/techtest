@@ -20,4 +20,12 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     get books_reserve_url
     assert_response :success
   end
+
+  #all books
+  #filters
+  #book with reservations
+  #book available
+  #create ok
+  #create error (rescue)
+  #reserves
 end

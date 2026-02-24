@@ -9,3 +9,13 @@ two:
   title: MyString
   author: MyString
   status: MyString
+
+available_book:
+  title: Testbook1
+  author: Testauthor1
+  status: available
+
+reserved_book:
+  title: Testbook2
+  author: Testauthor2
+  status: reserved
