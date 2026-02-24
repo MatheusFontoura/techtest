@@ -6,17 +6,19 @@ class BooksController < ApplicationController
   end
 
   def show
-    @book = Book.find(params[:id])
+    @book = Book.includes(:reservations).find(params[:id])
     render json: @book, include: :reservations
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Book not found" }, status: :not_found
   end
 
   def create
-    @book = Book.create(book_params)
-    render json: @book, status: :created
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { error: e.message }, status: :unprocessable_entity
+    @book = Book.new(book_params)
+    if @book.save
+      render json: @book, status: :created
+    else
+      render json: { error: @book.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def reserve

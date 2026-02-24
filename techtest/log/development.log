@@ -158,3 +158,12 @@ Processing by BooksController#index as */*
 Completed 200 OK in 8ms (Views: 6.6ms | ActiveRecord: 1.2ms (2 queries, 0 cached) | GC: 0.7ms)
 
 
+Started GET "/books" for ::1 at 2026-02-24 17:51:01 -0300
+Processing by BooksController#index as */*
+  [1m[36mBook Load (1.0ms)[0m  [1m[34mSELECT "books".* FROM "books" /*action='index',application='Techtest',controller='books'*/[0m
+  ↳ app/controllers/books_controller.rb:5:in `index'
+  [1m[36mReservation Load (0.3ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."book_id" IN (1, 2, 3, 4) /*action='index',application='Techtest',controller='books'*/[0m
+  ↳ app/controllers/books_controller.rb:5:in `index'
+Completed 200 OK in 29ms (Views: 15.8ms | ActiveRecord: 7.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
