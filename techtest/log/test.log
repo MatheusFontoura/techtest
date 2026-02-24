@@ -124,3 +124,64 @@ Processing by BooksController#reserve as JSON
   [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."id" = $1 LIMIT $2[0m  [["id", 457185008], ["LIMIT", 1]]
 Completed 422 Unprocessable Content in 6ms (Views: 0.2ms | ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
   [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.9ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "books" DISABLE TRIGGER ALL;ALTER TABLE "reservations" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mFixtures Load (0.5ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "reservations";
+INSERT INTO "books" ("id", "title", "author", "status", "created_at", "updated_at") VALUES (349599371, 'Testbook1', 'Testauthor1', 'available', '2026-02-24 21:21:38.238756', '2026-02-24 21:21:38.238756'), (457185008, 'Testbook2', 'Testauthor2', 'reserved', '2026-02-24 21:21:38.238756', '2026-02-24 21:21:38.238756');
+INSERT INTO "reservations" ("id", "book_id", "email", "status", "created_at", "updated_at") VALUES (949240968, 457185008, 'test@test.com', 'reserved', '2026-02-24 21:21:38.245530', '2026-02-24 21:21:38.245530')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "books" ENABLE TRIGGER ALL;ALTER TABLE "reservations" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (11.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (4.9ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_catalog.pg_constraint SET convalidated=false WHERE conname = ''%1$I'' AND connamespace::regnamespace = ''%2$I''::regnamespace; ALTER TABLE %2$I.%3$I VALIDATE CONSTRAINT %1$I;',
+    constraint_name,
+    table_schema,
+    table_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------------------
+BooksControllerTest: test_cannot_reserve_already_reserved
+---------------------------------------------------------
+  [1m[36mBook Load (0.8ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."id" = $1 LIMIT $2[0m  [["id", 457185008], ["LIMIT", 1]]
+Started POST "/books/457185008/reserve" for 127.0.0.1 at 2026-02-24 18:21:38 -0300
+Processing by BooksController#reserve as JSON
+  Parameters: {"email"=>"[FILTERED]", "id"=>"457185008", "book"=>{}}
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."id" = $1 LIMIT $2[0m  [["id", 457185008], ["LIMIT", 1]]
+Completed 422 Unprocessable Content in 29ms (Views: 22.5ms | ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 20.0ms)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+BooksControllerTest: test_reserve_sucess_available
+--------------------------------------------------
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."id" = $1 LIMIT $2[0m  [["id", 349599371], ["LIMIT", 1]]
+Started POST "/books/349599371/reserve" for 127.0.0.1 at 2026-02-24 18:21:38 -0300
+Processing by BooksController#reserve as HTML
+  Parameters: {"email"=>"[FILTERED]", "id"=>"349599371"}
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."id" = $1 LIMIT $2[0m  [["id", 349599371], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mReservation Create (1.9ms)[0m  [1m[32mINSERT INTO "reservations" ("book_id", "email", "status", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["book_id", 349599371], ["email", "[FILTERED]"], ["status", "reserved"], ["created_at", "2026-02-24 21:21:38.409684"], ["updated_at", "2026-02-24 21:21:38.409684"]]
+  [1m[36mTRANSACTION (2.4ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mBook Update (1.3ms)[0m  [1m[33mUPDATE "books" SET "status" = $1, "updated_at" = $2 WHERE "books"."id" = $3[0m  [["status", "reserved"], ["updated_at", "2026-02-24 21:21:38.417210"], ["id", 349599371]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 21ms (Views: 0.3ms | ActiveRecord: 6.9ms (3 queries, 0 cached) | GC: 0.6ms)
+  [1m[36mBook Load (0.3ms)[0m  [1m[34mSELECT "books".* FROM "books" WHERE "books"."id" = $1 LIMIT $2[0m  [["id", 349599371], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m

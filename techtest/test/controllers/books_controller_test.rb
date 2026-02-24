@@ -10,10 +10,16 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
       assert_equal "Book is already reserved", response.parsed_body["error"]
   end
 
+  test "reserve sucess available" do
+    book = books(:available_book)
+    post reserve_book_url(book), params: { email: "user@test.com" }
+    assert_response :created
+    book.reload
+    assert_equal "reserved", book.status
+  end
+
   #all books
   #filters
-  #book with reservations
-  #book available
   #create ok
   #create error (rescue)
   #reserves
